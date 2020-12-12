@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# bontouch-assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A sample react assignment. Feel free to fork, copy and modify as needed.
 
-## Available Scripts
+## Example
 
-In the project directory, you can run:
+See https://bontouch-assignment.netlify.app for a look at the code live. :rocket:
 
-### `npm start`
+## Usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+First install the dependencies:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```sh
+npm install
+```
 
-### `npm test`
+Then you can:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Command               | Description                                  |
+| --------------------- | -------------------------------------------- |
+| **`npm run start`**   | Run the website on http://localhost:3000     |
+| **`npm run build`**   | Build the production version inside `/build` |
+| **`npm run test`**    | Run the tests                                |
+| **`npm run tsc`**     | Run TypeScript type-checking                 |
+| **`npm run lint`**    | Run eslint                                   |
+| **`npm run format`**  | Run prettier and eslint with `--fix`         |
 
-### `npm run build`
+This projects uses TypeScript with create-react-app.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Explanation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+It only runs **thanks to**:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [create-react-app](https://create-react-app.dev/)
+- [axios](https://github.com/axios/axios) for the promise based HTTP client
 
-### `npm run eject`
+## Guidelines
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [Prettier](https://github.com/prettier/prettier) is used for style consistencies in all files
+- [ESlint](http://eslint.org/) is used for linting
+- [EditorConfig](http://editorconfig.org/) is used to enforce correct spacings on all files
+- The above is **enforced when you try to commit**
+- Commits should be in the form of:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+<type>(<scope>): <subject>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<type>: build, ci, chore, docs, feat, fix, perf, refactor, revert, style, test
+<scope>: the scope of the commit
+<subject>: a short imperative subject
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+feat(search): Add focus to input field
+chore(webpack): Migrate to webpack 2
+test(react): Add carousel unit tests
+```
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+See [conventional commits](https://www.conventionalcommits.org).
