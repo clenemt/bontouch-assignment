@@ -37,12 +37,17 @@ It only runs **thanks to**:
 - [react-router](https://github.com/ReactTraining/react-router) for the declarative routing
 - [bootstrap v5](https://getbootstrap.com/docs/5.0/components/card/) for the helper classes and the base styles
 
-## More
+Attention was paid to:
 
-Avoids layout shift with `<Delayed />` component
-image intrinsic ratio on album 
-lazy loading album images
-avoid refetching data if cached
+- Minimizing layout shift with `<Delayed />` component and image intrinsic ratio
+- Avoiding unnecessary requests with `lazy` loading images and agressive caching
+
+## TODO
+
+- [ ] global styling
+- [ ] animation for album
+- [ ] arrow keys for changing image
+- [ ] testing utils / contexts / some components
 
 ## Guidelines
 
