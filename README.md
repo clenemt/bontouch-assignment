@@ -31,8 +31,18 @@ This projects uses TypeScript with create-react-app.
 
 It only runs **thanks to**:
 
-- [create-react-app](https://create-react-app.dev/)
+- [create-react-app](https://create-react-app.dev/) to avoid messing up with webpack / eslint / typescript and the rest
 - [axios](https://github.com/axios/axios) for the promise based HTTP client
+- [react-query](https://github.com/tannerlinsley/react-query) for caching the return of axios and simplifying the fetch logic
+- [react-router](https://github.com/ReactTraining/react-router) for the declarative routing
+- [bootstrap v5](https://getbootstrap.com/docs/5.0/components/card/) for the helper classes and the base styles
+
+## More
+
+Avoids layout shift with `<Delayed />` component
+image intrinsic ratio on album 
+lazy loading album images
+avoid refetching data if cached
 
 ## Guidelines
 

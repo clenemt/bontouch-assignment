@@ -12,11 +12,13 @@
     "@types/react-dom": "^16.9.10",
     "axios": "^0.21.0",
     "bootstrap": "^5.0.0-beta1",
+    "classnames": "^2.2.6",
     "husky": "^4.3.5",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-query": "^2.26.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "sass": "^1.30.0",
@@ -45,7 +47,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "jsx-a11y/img-redundant-alt": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -58,5 +63,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.11",
+    "@types/react-router-dom": "^5.1.6"
   }
 }
