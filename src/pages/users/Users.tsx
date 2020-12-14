@@ -4,11 +4,11 @@ import { Delayed } from '../../components/Delayed/Delayed';
 import { fetchUsers } from '../../services/queries';
 import { User } from '../../types/User';
 import { useLocalStorage } from '../../utils/hooks';
-import { UsersCard } from './UsersCard';
+import { UsersCards } from './UsersCards';
 
 export const Users = () => {
   const { status, data: users, error } = useQuery<User[]>('users', fetchUsers);
-  const [starred, setStarred] = useLocalStorage('starred', []);
+  const [starred, setStarred] = useLocalStorage<number[]>('starred', []);
 
   // Add or remove the star
   const onStarClick = useCallback(
@@ -28,8 +28,8 @@ export const Users = () => {
   if (status === 'error') return <p>Users error: {error}</p>;
   if (!users || !users.length) return <p>No users found</p>;
 
-  const normalUsers = users.filter((user) => starred.indexOf(user.id) === -1);
-  const favoriteUsers = users.filter((user) => starred.indexOf(user.id) !== -1);
+  const normalUsers = users.filter((u) => starred.indexOf(u.id) === -1);
+  const starredUsers = starred.map((id) => users.find((u) => u.id === id)!);
 
   return (
     <>
@@ -37,15 +37,8 @@ export const Users = () => {
         Favorites
       </h2>
       <div className="row g-2 g-sm-3 gx-md-4 gy-lg-4 mb-5">
-        {favoriteUsers.length > 0 ? (
-          favoriteUsers.map((user) => (
-            <UsersCard
-              key={user.id}
-              user={user}
-              active={true}
-              onStarClick={onStarClick}
-            />
-          ))
+        {starredUsers.length > 0 ? (
+          <UsersCards users={starredUsers} onStarClick={onStarClick} starred />
         ) : (
           <div className="d-flex align-items-center justify-content-center text-muted py-4">
             Your ⭐ users will appear here...
@@ -56,14 +49,7 @@ export const Users = () => {
       <h2 className="border-bottom">Users</h2>
       <div className="row g-2 g-sm-3 gx-md-4 gy-lg-4 mb-4">
         {normalUsers.length > 0 ? (
-          normalUsers.map((user) => (
-            <UsersCard
-              key={user.id}
-              user={user}
-              active={false}
-              onStarClick={onStarClick}
-            />
-          ))
+          <UsersCards users={normalUsers} onStarClick={onStarClick} />
         ) : (
           <div className="d-flex align-items-center justify-content-center text-muted py-4">
             Wow, you seem to enjoy those stars a bit too much 😮

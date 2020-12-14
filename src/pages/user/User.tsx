@@ -6,7 +6,7 @@ import { fetchUser, fetchUserAlbums, queryCache } from '../../services/queries';
 import { Album } from '../../types/Album';
 import { User as IUser } from '../../types/User';
 import { useBreadcrumbs } from '../../contexts/Breadcrumbs';
-import { UserAlbumCard } from './UserAlbumCard';
+import { UserAlbumsCards } from './UserAlbumsCards';
 import { UserDetails } from './UserDetails';
 
 export const User = () => {
@@ -58,9 +58,7 @@ export const User = () => {
         ) : !album.data || !album.data.length ? (
           <p>No albums found</p>
         ) : (
-          album.data.map((album) => (
-            <UserAlbumCard key={album.id} album={album} id={params.user} />
-          ))
+          <UserAlbumsCards albums={album.data} userId={params.user} />
         )}
       </div>
     </>

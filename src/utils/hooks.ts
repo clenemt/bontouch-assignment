@@ -12,8 +12,11 @@ export const useDelayedRender = (delay: number) => {
 };
 
 // Basic hook to get/set from local storage
-export const useLocalStorage = <T>(key: string, initialValue?: T) => {
-  const [storedValue, setStoredValue] = useState(() => {
+export const useLocalStorage = <T>(
+  key: string,
+  initialValue?: T
+): [T, (value: T) => void] => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -36,4 +39,19 @@ export const useLocalStorage = <T>(key: string, initialValue?: T) => {
   };
 
   return [storedValue, setValue];
+};
+
+// Basic hook to listen to window resize
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState([0, 0]);
+
+  useEffect(() => {
+    const handler = () =>
+      setWindowSize([document.documentElement.clientWidth, window.innerHeight]);
+    window.addEventListener('resize', handler);
+    handler();
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  return windowSize;
 };

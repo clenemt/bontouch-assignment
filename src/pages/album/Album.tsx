@@ -1,13 +1,6 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  KeyboardEvent,
-  useLayoutEffect
-} from 'react';
+import React, { useEffect, useRef, useState, KeyboardEvent } from 'react';
 import { useQuery } from 'react-query';
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Close } from '../../components/Close/Close';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Delayed } from '../../components/Delayed/Delayed';
 import {
   fetchAlbum,
@@ -19,6 +12,8 @@ import { Album as IAlbum } from '../../types/Album';
 import { Photo } from '../../types/Photo';
 import { User } from '../../types/User';
 import { useBreadcrumbs } from '../../contexts/Breadcrumbs';
+import { AlbumGallery } from './AlbumGallery';
+import { AlbumPhotos } from './AlbumPhotos';
 
 type RouteProps = {
   user: string;
@@ -26,8 +21,9 @@ type RouteProps = {
 };
 
 export const Album = () => {
-  const overlay = useRef<HTMLDivElement>(null);
   const history = useHistory();
+  const imagesRef = useRef<HTMLImageElement>(null);
+  const [target, setTarget] = useState<any>();
   const [active, setActive] = useState<Photo | null>();
   const [breadcrumbs, setBreadcrumbs] = useBreadcrumbs();
   const match = useRouteMatch<RouteProps>();
@@ -111,24 +107,29 @@ export const Album = () => {
     }
   };
 
-  // Make sure we focus the overlay to prevent tabbing behind
-  useLayoutEffect(() => {
-    if (active) overlay.current!.focus();
-  }, [active]);
-
   // Effect that watches every url changes and
-  // update the current active state
+  // update the current active state as well
+  // as resetting the target for transition
   useEffect(() => {
-    if (photosQuery.data) {
-      setActive(
-        photoMatch?.params.photo
-          ? photosQuery.data.find(
-              (photo) => photo.id === +photoMatch.params.photo
-            )
-          : null
-      );
-    }
+    if (!photosQuery.data) return;
+    const next = photoMatch?.params.photo
+      ? photosQuery.data.find((photo) => photo.id === +photoMatch.params.photo)
+      : null;
+    if (!next) setTarget(null);
+    setActive(next);
   }, [photoMatch?.params.photo, photosQuery.data]);
+
+  // Effect that finds the transition target
+  useEffect(() => {
+    if (!active || !imagesRef.current || !photosQuery.data) return;
+    setTarget(
+      imagesRef.current.querySelector(
+        `div:nth-child(${
+          photosQuery.data.findIndex((photo) => photo.id === active.id) + 1
+        }) img`
+      )
+    );
+  }, [active, photosQuery.data]);
 
   if (album.status === 'loading') return <Delayed>Loading album...</Delayed>;
   if (album.status === 'error') return <p>Album error: {album.error}</p>;
@@ -151,53 +152,17 @@ export const Album = () => {
             Showing {photosQuery.data.length} photos
           </p>
 
-          <div className="row g-2 g-md-3 g-xl-4 pt-md-5">
-            {photosQuery.data.map((photo, i) => (
-              <Link
-                key={photo.id}
-                to={`${match.url}/${photo.id}`}
-                className="col-6 col-md-4 col-lg-3"
-              >
-                <div className="thumbnail__container">
-                  <img
-                    className="thumbnail__img"
-                    src={photo.thumbnailUrl}
-                    alt={`An album photo named ${photo.title}`}
-                    loading={i > 25 ? 'lazy' : 'eager'}
-                  />
-                </div>
-              </Link>
-            ))}
+          <div className="row g-2 g-md-3 g-xl-4 pt-md-5" ref={imagesRef}>
+            <AlbumPhotos photos={photosQuery.data} url={match.url} />
           </div>
 
-          {active && (
-            <div
-              ref={overlay}
-              className="img__container img__container--open"
-              tabIndex={-1}
+          {active && target && (
+            <AlbumGallery
+              target={target}
+              photo={active}
+              onClose={onClose}
               onKeyDown={onKeyDown}
-            >
-              <div className="img__bg" />
-              <div className="img__inner">
-                <Close
-                  className="img__close"
-                  variant="light"
-                  onClick={onClose}
-                />
-                <figure>
-                  <img
-                    className="img--fullscreen img-fluid"
-                    src={active.url}
-                    alt={`An album photo named ${active.title}`}
-                    width="600"
-                    height="600"
-                  />
-                  <figcaption className="text-center text-light">
-                    {active.title}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
+            />
           )}
         </>
       )}

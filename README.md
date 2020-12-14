@@ -46,10 +46,10 @@ Attention was paid to:
 - Responsive layouts from mobile to desktop
 - Accessibility (skip-to-content, accessible labels, consistent focus, correct element usage...)
 - Handling edge cases (directly loading descendent page, network errors)
+- Animating the gallery (works even with resizing the browser)
 
 ## TODO
 
-- [ ] animation for album
 - [ ] testing utils / contexts / some components
 
 ## Guidelines
