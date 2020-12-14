@@ -2,6 +2,8 @@
 
 A sample react assignment. Feel free to fork, copy and modify as needed.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0feeea1b-4afc-4941-90da-58a534e41a20/deploy-status)](https://app.netlify.com/sites/bontouch-assignment/deploys)
+
 ## Example
 
 See https://bontouch-assignment.netlify.app for a look at the code live. :rocket:
@@ -43,6 +45,7 @@ Attention was paid to:
 - Avoiding unnecessary requests with `lazy` loading images and agressive caching
 - Responsive layouts from mobile to desktop
 - Accessibility (skip-to-content, accessible labels, consistent focus, correct element usage...)
+- Handling edge cases (directly loading descendent page, network errors)
 
 ## TODO
 
