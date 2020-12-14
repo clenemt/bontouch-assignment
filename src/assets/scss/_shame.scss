@@ -1,0 +1,61 @@
+.img__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  z-index: 1;
+}
+
+.img__bg,
+.img__inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.img__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img__bg {
+  background: #1e1e1e;
+  opacity: 0;
+  transition-duration: inherit;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.47, 0, 0.74, 0.71);
+}
+
+.img__container--open .img__bg {
+  opacity: 0.9;
+  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+// Make it so that images are square and do not cause a reflow
+.thumbnail__container {
+  position: relative;
+  padding-bottom: 100%;
+  height: 0;
+  overflow: hidden;
+}
+
+.thumbnail__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card__btn--top {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
