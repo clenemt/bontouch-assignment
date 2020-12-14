@@ -1,3 +1,7 @@
+//
+// The image carousel
+//
+
 .img__container {
   position: fixed;
   top: 0;
@@ -5,8 +9,6 @@
   width: 100%;
   height: 100%;
   outline: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
   z-index: 1;
 }
 
@@ -25,8 +27,14 @@
   justify-content: center;
 }
 
+.img__close {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
 .img__bg {
-  background: #1e1e1e;
+  background: $black;
   opacity: 0;
   transition-duration: inherit;
   transition-property: opacity;
@@ -38,7 +46,11 @@
   transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-// Make it so that images are square and do not cause a reflow
+//
+// The image thumbnails
+//
+
+// Make it so that images are square and do not cause a content shift
 .thumbnail__container {
   position: relative;
   padding-bottom: 100%;
@@ -52,10 +64,4 @@
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-.card__btn--top {
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
 }

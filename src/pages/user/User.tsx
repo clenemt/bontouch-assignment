@@ -5,57 +5,61 @@ import { Delayed } from '../../components/Delayed/Delayed';
 import { fetchUser, fetchUserAlbums, queryCache } from '../../services/queries';
 import { Album } from '../../types/Album';
 import { User as IUser } from '../../types/User';
-import { useBreadcrumbs } from '../contexts/breadcrumbs';
-import { AlbumCard } from './AlbumCard';
+import { useBreadcrumbs } from '../../contexts/Breadcrumbs';
+import { UserAlbumCard } from './UserAlbumCard';
 import { UserDetails } from './UserDetails';
 
 export const User = () => {
-  const params = useParams<{ userId: string }>();
+  const params = useParams<{ user: string }>();
   const [breadcrumbs, setBreadcrumbs] = useBreadcrumbs();
 
-  const userQuery = useQuery<IUser>(
-    ['users', params.userId],
-    () => fetchUser(params.userId),
+  // Fetch current user or grab it from cache
+  // also update the breadcrumb context to avoid seeing the id
+  const user = useQuery<IUser>(
+    ['users', params.user],
+    () => fetchUser(params.user),
     {
-      initialData: () =>
-        queryCache
+      initialData: () => {
+        const user = queryCache
           .getQueryData<IUser[]>('users')
-          ?.find((u) => u.id === +params.userId),
+          ?.find((u) => u.id === +params.user);
+        if (user) setBreadcrumbs({ ...breadcrumbs, user });
+        return user;
+      },
       initialStale: true,
-      onSuccess: (user) => setBreadcrumbs({ ...breadcrumbs, userId: user.name })
+      onSuccess: (user) => setBreadcrumbs({ ...breadcrumbs, user })
     }
   );
 
-  const albumsQuery = useQuery<Album[]>(
-    ['albums', { user: params.userId }],
-    () => fetchUserAlbums(params.userId),
-    { enabled: userQuery.data }
+  // Fetch current user albums
+  const album = useQuery<Album[]>(
+    ['albums', { user: params.user }],
+    () => fetchUserAlbums(params.user),
+    { enabled: user.data }
   );
 
-  return userQuery.status === 'loading' ? (
-    <Delayed>Loading users...</Delayed>
-  ) : userQuery.status === 'error' ? (
-    <p>
-      Could not load user ${params.userId}: ${userQuery.error}
-    </p>
-  ) : !userQuery.data ? (
-    <p>No user found with id ${params.userId}</p>
-  ) : (
-    <>
-      <h1 className="text-center">{userQuery.data.name}</h1>
-      <UserDetails user={userQuery.data} />
+  if (user.status === 'loading') return <Delayed>Loading user...</Delayed>;
+  if (user.status === 'error') return <p>User error: ${user.error}</p>;
+  if (!user.data) return <p>No user found with id ${params.user}</p>;
 
-      <h2>Albums</h2>
-      <div className="row g-2 g-sm-3 gx-md-4 gy-lg-4">
-        {albumsQuery.status === 'loading' ? (
+  return (
+    <>
+      <h1 className="text-center mb-4 pt-md-5" id="content">
+        {user.data.name}
+      </h1>
+      <UserDetails user={user.data} />
+
+      <h2 className="pt-md-5">Albums</h2>
+      <div className="row g-2 g-sm-3 gx-md-4 gy-lg-4 mb-4">
+        {album.status === 'loading' ? (
           <Delayed>Loading user albums...</Delayed>
-        ) : albumsQuery.status === 'error' ? (
-          <p>Could not load user albums: {albumsQuery.error}</p>
-        ) : !albumsQuery.data || !albumsQuery.data.length ? (
+        ) : album.status === 'error' ? (
+          <p>Could not load user albums: {album.error}</p>
+        ) : !album.data || !album.data.length ? (
           <p>No albums found</p>
         ) : (
-          albumsQuery.data.map((album) => (
-            <AlbumCard key={album.id} album={album} userId={params.userId} />
+          album.data.map((album) => (
+            <UserAlbumCard key={album.id} album={album} id={params.user} />
           ))
         )}
       </div>

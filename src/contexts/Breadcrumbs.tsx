@@ -1,9 +1,10 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
 export type BreadcrumbsContext = {
-  [key: string]: string;
-  userId: string;
-  albumId: string;
+  [key: string]: {
+    id: number | string;
+    name: string;
+  };
 };
 
 const BreadcrumbsCtx = createContext<
@@ -14,15 +15,16 @@ const BreadcrumbsCtx = createContext<
   | null
 >(null);
 
+// The context provider
 export const BreadcrumbsProvider = (props: any) => {
   const [breadcrumbs, setBreadcrumbs] = useState({});
   const value = useMemo(() => [breadcrumbs, setBreadcrumbs], [breadcrumbs]);
   return <BreadcrumbsCtx.Provider value={value} {...props} />;
 };
 
+// The exposed hook
 export const useBreadcrumbs = () => {
   const context = useContext(BreadcrumbsCtx);
-  if (!context)
-    throw new Error(`useBreadcrumbs must be used within a BreadcrumbsProvider`);
+  if (!context) throw new Error('Must be used within a BreadcrumbsProvider');
   return context;
 };

@@ -41,12 +41,12 @@ Attention was paid to:
 
 - Minimizing layout shift with `<Delayed />` component and image intrinsic ratio
 - Avoiding unnecessary requests with `lazy` loading images and agressive caching
+- Responsive layouts from mobile to desktop
+- Accessibility (skip-to-content, accessible labels, consistent focus, correct element usage...)
 
 ## TODO
 
-- [ ] global styling
 - [ ] animation for album
-- [ ] arrow keys for changing image
 - [ ] testing utils / contexts / some components
 
 ## Guidelines

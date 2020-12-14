@@ -1,0 +1,10 @@
+//
+// Our custom types
+//
+
+// Bootstrap default h2 is too big for the design
+h2,
+.h2 {
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}

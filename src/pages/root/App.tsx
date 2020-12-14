@@ -5,12 +5,12 @@ import { User } from '../user/User';
 import { Users } from '../users/Users';
 import { Breadcrumb } from '../../components/Breadcrumb/Breadcrumb';
 import { queryCache } from '../../services/queries';
-import { BreadcrumbsProvider } from '../contexts/breadcrumbs';
+import { BreadcrumbsProvider } from '../../contexts/Breadcrumbs';
 
 const routes = [
   { path: '/', component: Users, exact: true },
-  { path: '/users/:userId/:albumId', component: Album },
-  { path: '/users/:userId', component: User }
+  { path: '/users/:user/:album', component: Album },
+  { path: '/users/:user', component: User }
 ];
 
 const paths = routes.map((route) => route.path).sort();
