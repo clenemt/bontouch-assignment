@@ -48,10 +48,6 @@ Attention was paid to:
 - Handling edge cases (directly loading descendent page, network errors)
 - Animating the gallery (works even with resizing the browser)
 
-## TODO
-
-- [ ] testing utils / contexts / some components
-
 ## Guidelines
 
 - [Prettier](https://github.com/prettier/prettier) is used for style consistencies in all files
