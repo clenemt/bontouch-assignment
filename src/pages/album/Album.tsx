@@ -22,8 +22,8 @@ type RouteProps = {
 
 export const Album = () => {
   const history = useHistory();
-  const imagesRef = useRef<HTMLImageElement>(null);
-  const [target, setTarget] = useState<any>();
+  const imagesRef = useRef<HTMLDivElement>(null);
+  const [target, setTarget] = useState<HTMLElement | null>(null);
   const [active, setActive] = useState<Photo | null>();
   const [breadcrumbs, setBreadcrumbs] = useBreadcrumbs();
   const match = useRouteMatch<RouteProps>();
@@ -125,7 +125,7 @@ export const Album = () => {
     setTarget(
       imagesRef.current.children[
         photosQuery.data.findIndex((photo) => photo.id === active.id)
-      ].querySelector('img')
+      ].querySelector('img')!
     );
   }, [active, photosQuery.data]);
 

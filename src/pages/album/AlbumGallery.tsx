@@ -11,7 +11,7 @@ import { Photo } from '../../types/Photo';
 import { useWindowSize } from '../../utils/hooks';
 
 type Props = {
-  target: any;
+  target: HTMLElement;
   photo: Photo;
   onClose: () => void;
   onKeyDown: (e: KeyboardEvent) => void;
@@ -23,8 +23,16 @@ export const AlbumGallery = ({ onClose, onKeyDown, photo, target }: Props) => {
   const [style, setStyle] = useState({});
   const [animating, setAnimating] = useState('open');
 
+  const onCloseAnimate = () => setAnimating('closing');
+
+  const onKeyDownAnimate = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') setAnimating('closing');
+    else onKeyDown(e);
+  };
+
   // Animation effect
   useLayoutEffect(() => {
+    let timer: any;
     const rect = target.getBoundingClientRect();
     const scale = Math.min(vw, 600) / rect.width;
     const newStyle = {
@@ -39,17 +47,21 @@ export const AlbumGallery = ({ onClose, onKeyDown, photo, target }: Props) => {
       newStyle.transition = 'transform ease-in-out .2s';
     } else if (animating === 'opening') {
       newStyle.transition = 'transform ease-in-out .2s';
-      setTimeout(() => setAnimating('opened'), 200);
+      timer = setTimeout(() => setAnimating('opened'), 200);
+    } else if (animating === 'closing') {
+      newStyle.transition = 'transform ease-in-out .2s';
+      timer = setTimeout(onClose, 200);
     }
 
-    if (animating !== 'open') {
+    if (animating !== 'open' && animating !== 'closing') {
       newStyle.transform = `translateX(${
         vw / 2 - rect.width / 2 - rect.left
       }px) translateY(${vh / 2 - rect.width / 2 - rect.top}px) scale(${scale})`;
     }
 
     setStyle(newStyle);
-  }, [animating, target, vw, vh]);
+    return () => clearTimeout(timer);
+  }, [animating, target, vw, vh, onClose]);
 
   // Make sure we focus the overlay to prevent external tabbing
   useLayoutEffect(() => {
@@ -64,11 +76,15 @@ export const AlbumGallery = ({ onClose, onKeyDown, photo, target }: Props) => {
         animating !== 'open' && 'gallery__container--open'
       )}
       tabIndex={-1}
-      onKeyDown={onKeyDown}
+      onKeyDown={onKeyDownAnimate}
     >
       <div className="gallery__bg" />
       <div className="gallery__inner">
-        <Close className="gallery__close" variant="light" onClick={onClose} />
+        <Close
+          className="gallery__close"
+          variant="light"
+          onClick={onCloseAnimate}
+        />
         <figure>
           <img
             style={style}
