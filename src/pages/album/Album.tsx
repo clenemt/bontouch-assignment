@@ -123,11 +123,9 @@ export const Album = () => {
   useEffect(() => {
     if (!active || !imagesRef.current || !photosQuery.data) return;
     setTarget(
-      imagesRef.current.querySelector(
-        `div:nth-child(${
-          photosQuery.data.findIndex((photo) => photo.id === active.id) + 1
-        }) img`
-      )
+      imagesRef.current.children[
+        photosQuery.data.findIndex((photo) => photo.id === active.id)
+      ].querySelector('img')
     );
   }, [active, photosQuery.data]);
 

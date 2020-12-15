@@ -13,7 +13,7 @@ export const UserAlbumsCards = ({ albums, userId }: Props) => {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 1 },
-    trail: 50
+    trail: 30
   });
 
   return (
